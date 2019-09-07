@@ -1,0 +1,15 @@
+spring:
+    application:
+        name: springboot2-demo
+    jackson:
+        date-format: yyyy-MM-dd HH:mm:ss
+        time-zone: GMT+8
+        default-property-inclusion: non_null
+    profiles:
+      active: dev
+server:
+    port: 8877 #启动端口
+    tomcat:
+      max-connections: 200 # 默认值
+      max-threads: 200 # 默认值
+      max-http-header-size: 8192
