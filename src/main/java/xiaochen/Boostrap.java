@@ -1,4 +1,4 @@
-package xiaochen.nginx;
+package xiaochen;
 
 
 import org.springframework.beans.factory.annotation.Value;
