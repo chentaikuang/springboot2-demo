@@ -20,6 +20,12 @@ public class Dingtalk {
 //        https://oapi.dingtalk.com/robot/send?access_token=XXXXXX&timestamp=XXX&sign=XXX
         StringBuffer stringBuffer = new StringBuffer(reqUrl).append("&timestamp=").append(timestamp).append("&sign=").append(sign);
         System.out.println(stringBuffer.toString());
+
+        String nn = null;
+        if (null == nn){
+//        if (nn == null){
+            System.out.println("00000000000000");
+        }
     }
 
     private static String getSign(Long timestamp, String secret) throws NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException {
