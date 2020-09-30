@@ -8,7 +8,7 @@ import xiaochen.event.listener.ContextStartEventListener;
 import xiaochen.event.listener.ContextStopEventListener;
 import xiaochen.event.multicaster.SimpleApplicationEventMulticaster;
 
-public class EventMain {
+public class EventTestMain {
 
     public static void main(String[] args) {
         SimpleApplicationEventMulticaster eventMulticaster = new SimpleApplicationEventMulticaster(true);
