@@ -3,6 +3,7 @@ package xiaochen.controller;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import xiaochen.util.Loggers;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +18,7 @@ public class TestController {
     //http://localhost:8877/api/test/tips
     @RequestMapping("/tips")
     public String tips() {
+        Loggers.CONTROLLER_TEST.error("===============>>");
         return "hi," + port;
     }
 
