@@ -1,8 +1,10 @@
 package xiaochen.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import xiaochen.service.TestService;
 import xiaochen.util.Loggers;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +17,9 @@ public class TestController {
     @Value("${server.port}")
     private int port;
 
+    @Autowired
+    private TestService testService;
+
     //http://localhost:8877/api/test/tips
     @RequestMapping("/tips")
     public String tips() {
@@ -24,9 +29,30 @@ public class TestController {
 
     //http://localhost:8877/api/test/returnReq
     @RequestMapping("/returnReq")
-    public String returnReq(HttpServletResponse response,HttpServletRequest servlet) {
+    public String returnReq(HttpServletResponse response, HttpServletRequest servlet) {
         SEEController seeController = new SEEController();
         return seeController.push();
+    }
+
+    //http://localhost:8877/api/test/lock
+    @RequestMapping("/lock")
+    public String lock(HttpServletResponse response, HttpServletRequest servlet) {
+        int nm = 5;
+        while (nm-- > 0) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    testService.test();
+                }
+            }).start();
+        }
+        return "1";
+    }
+
+    //http://localhost:8877/api/test/lock2
+    @RequestMapping("/lock2")
+    public int lock2(HttpServletResponse response, HttpServletRequest servlet) {
+        return testService.test2();
     }
 
 }
