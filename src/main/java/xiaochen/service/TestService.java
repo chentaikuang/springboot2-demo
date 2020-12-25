@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class TestService {
 
+    //static 供所有线程共享，达到所有线程互斥目的、安全
     private static Map<String, String> concurMap = new ConcurrentHashMap<>();
 
     static {
@@ -72,17 +73,20 @@ public class TestService {
     }
 
     public String getByKey(String key) {
-        System.out.println("1.MAP_SIZE:" + concurMap.size() + "," + JSONObject.toJSONString(concurMap));
-        concurMap.put(RandomStringUtils.randomNumeric(3), RandomStringUtils.randomNumeric(6));
-        System.out.println("2.MAP_SIZE:" + concurMap.size() + JSONObject.toJSONString(concurMap));
+        System.out.println("进.MAP_SIZE:" + concurMap.size() + "," + JSONObject.toJSONString(concurMap));
+        //synchronized 锁定相同的共享对象concurMap，达成互斥
+        synchronized (concurMap) {
+            concurMap.put(RandomStringUtils.randomNumeric(3), RandomStringUtils.randomNumeric(6));
+            System.out.println("出.MAP_SIZE:" + concurMap.size() + JSONObject.toJSONString(concurMap));
+        }
         return concurMap.containsKey(key) ? concurMap.get(key) : "NO_FOUND";
     }
 
     public String lockMap(String key) {
         synchronized (concurMap) {
-            sleep(10000);
+            sleep(20000);
         }
-        String Return = "RETURN:" + key;
+        String Return = "LOCK_RETURN:" + key;
         System.out.println(Return);
         return Return;
     }
