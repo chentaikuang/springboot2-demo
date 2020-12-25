@@ -1,13 +1,25 @@
 package xiaochen.service;
 
+import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class TestService {
+
+    private static Map<String, String> concurMap = new ConcurrentHashMap<>();
+
+    static {
+        concurMap.put(RandomStringUtils.randomAlphabetic(3), RandomStringUtils.randomAlphabetic(8));
+        concurMap.put(RandomStringUtils.randomAlphabetic(3), RandomStringUtils.randomAlphabetic(8));
+        concurMap.put(RandomStringUtils.randomAlphabetic(3), RandomStringUtils.randomAlphabetic(8));
+        System.out.println(JSONObject.toJSONString(concurMap));
+    }
 
     private static String LOCK = new String();
 
@@ -15,7 +27,7 @@ public class TestService {
         String str;
 //        synchronized (LOCK) {
 //        synchronized (TestService.class) {
-            forInfo();
+        forInfo();
 //        }
         return 1;
     }
@@ -32,9 +44,9 @@ public class TestService {
         }
     }
 
-    private void sleep() {
+    private void sleep(long millis) {
         try {
-            Thread.sleep(3000);
+            Thread.sleep(millis);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -44,8 +56,8 @@ public class TestService {
         String str;
 //        synchronized (LOCK) {
 //        synchronized (TestService.class) {
-            //str = printStr();
-            forInfo();
+        //str = printStr();
+        forInfo();
 //        }
 
         return 1;
@@ -57,5 +69,21 @@ public class TestService {
         System.out.println(DateFormatUtils.format(new Date(), "hh:MM:ss") + ",进来2-" + str);
         System.out.println(DateFormatUtils.format(new Date(), "hh:MM:ss") + ",返回2-" + str + "\n");
         return str;
+    }
+
+    public String getByKey(String key) {
+        System.out.println("1.MAP_SIZE:" + concurMap.size() + "," + JSONObject.toJSONString(concurMap));
+        concurMap.put(RandomStringUtils.randomNumeric(3), RandomStringUtils.randomNumeric(6));
+        System.out.println("2.MAP_SIZE:" + concurMap.size() + JSONObject.toJSONString(concurMap));
+        return concurMap.containsKey(key) ? concurMap.get(key) : "NO_FOUND";
+    }
+
+    public String lockMap(String key) {
+        synchronized (concurMap) {
+            sleep(10000);
+        }
+        String Return = "RETURN:" + key;
+        System.out.println(Return);
+        return Return;
     }
 }

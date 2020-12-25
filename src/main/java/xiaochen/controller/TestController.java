@@ -3,6 +3,7 @@ package xiaochen.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import xiaochen.service.TestService;
 import xiaochen.util.Loggers;
@@ -53,6 +54,18 @@ public class TestController {
     @RequestMapping("/lock2")
     public int lock2(HttpServletResponse response, HttpServletRequest servlet) {
         return testService.test2();
+    }
+
+    //http://localhost:8877/api/test/getStr?key=DJv
+    @RequestMapping("/getStr")
+    public String getStr(@RequestParam("key") String key) {
+        return testService.getByKey(key);
+    }
+
+    //http://localhost:8877/api/test/lockMap?key=DJv
+    @RequestMapping("/lockMap")
+    public String lockMap(@RequestParam("key") String key) {
+        return testService.lockMap(key);
     }
 
 }
