@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.stereotype.Service;
+import xiaochen.param.Params;
 
 import java.util.Date;
 import java.util.Map;
@@ -75,10 +76,10 @@ public class TestService {
     public String getByKey(String key) {
         System.out.println("进.MAP_SIZE:" + concurMap.size() + "," + JSONObject.toJSONString(concurMap));
         //synchronized 锁定相同的共享对象concurMap，达成互斥
-        synchronized (concurMap) {
-            concurMap.put(RandomStringUtils.randomNumeric(3), RandomStringUtils.randomNumeric(6));
-            System.out.println("出.MAP_SIZE:" + concurMap.size() + JSONObject.toJSONString(concurMap));
-        }
+//        synchronized (concurMap) {
+//            concurMap.put(RandomStringUtils.randomNumeric(3), RandomStringUtils.randomNumeric(6));
+//            System.out.println("出.MAP_SIZE:" + concurMap.size() + JSONObject.toJSONString(concurMap));
+//        }
         return concurMap.containsKey(key) ? concurMap.get(key) : "NO_FOUND";
     }
 
@@ -89,5 +90,10 @@ public class TestService {
         String Return = "LOCK_RETURN:" + key;
         System.out.println(Return);
         return Return;
+    }
+
+    public String del(Params param) {
+        System.out.println(JSONObject.toJSONString(param));
+        return "OK";
     }
 }

@@ -2,9 +2,8 @@ package xiaochen.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import xiaochen.param.Params;
 import xiaochen.service.TestService;
 import xiaochen.util.Loggers;
 
@@ -68,4 +67,10 @@ public class TestController {
         return testService.lockMap(key);
     }
 
+
+    //http://localhost:8877/api/test/del
+    @DeleteMapping("/del")
+    public String del(@RequestBody Params param) {
+        return testService.del(param);
+    }
 }
