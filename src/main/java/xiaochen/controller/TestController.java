@@ -81,4 +81,10 @@ public class TestController {
     public CommonResult complateTabFuture(@RequestParam(defaultValue = "P") String p) throws ExecutionException, InterruptedException {
         return testService.complateTabFuture(p);
     }
+
+    //http://localhost:8877/api/test/futureJoin?p=XX
+    @GetMapping("/futureJoin")
+    public CommonResult futureJoin(@RequestParam(defaultValue = "P") String p) throws ExecutionException, InterruptedException {
+        return testService.futureJoin(p);
+    }
 }

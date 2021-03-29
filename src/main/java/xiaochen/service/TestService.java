@@ -153,4 +153,30 @@ public class TestService {
     private void errMsg(String msg) {
         System.err.println(DateUtil.curDate() + " -> " + msg);
     }
+
+    public CommonResult futureJoin(String p) throws ExecutionException, InterruptedException {
+        System.out.println(DateUtil.curDate());
+        CompletableFuture<CommonResult> t1 = CompletableFuture.supplyAsync(() -> {
+            try {
+                infoMsg("T1");
+                return new CommonResult("T1");
+            } catch (Exception e) {
+                errMsg("T1(" + e.getMessage() + ")");
+                throw new CompletionException(e);
+            }
+        }, taskExecutor);
+        CompletableFuture<CommonResult> t2 = CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(3000);
+                infoMsg("T2");
+                return new CommonResult("T2");
+            } catch (Exception e) {
+                errMsg("T2(" + e.getMessage() + ")");
+                throw new CompletionException(e);
+            }
+        }, taskExecutor);
+        CompletableFuture.allOf(t1, t2).join();
+        System.out.println(DateUtil.curDate());
+        return new CommonResult(t1.get().getMsg() + " || " + t2.get().getMsg());
+    }
 }
