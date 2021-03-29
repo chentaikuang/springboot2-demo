@@ -2,16 +2,27 @@ package xiaochen.service;
 
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
+import xiaochen.common.CommonResult;
 import xiaochen.param.Params;
+import xiaochen.util.DateUtil;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public class TestService {
+
+    @Resource
+    ThreadPoolTaskExecutor taskExecutor;
 
     //static 供所有线程共享，达到所有线程互斥目的、安全
     private static Map<String, String> concurMap = new ConcurrentHashMap<>();
@@ -95,5 +106,51 @@ public class TestService {
     public String del(Params param) {
         System.out.println(JSONObject.toJSONString(param));
         return "OK";
+    }
+
+    public CommonResult complateTabFuture(String p) throws ExecutionException, InterruptedException {
+        CompletableFuture<CommonResult> futureRst = null;
+        if (StringUtils.isBlank(p) || "0".equalsIgnoreCase(p)) {
+            CompletableFuture.runAsync(() -> {
+                infoMsg("runAsync");
+            }, taskExecutor);
+            futureRst = new CompletableFuture<>();
+            futureRst.complete(new CommonResult("runAsync"));
+        } else {
+            futureRst = CompletableFuture.supplyAsync(() -> {
+                infoMsg("supplyAsync");
+                CommonResult result = new CommonResult("supplyAsync");
+                return result;
+            }, taskExecutor);
+        }
+
+
+        CompletableFuture<Void> T1 = CompletableFuture.runAsync(() -> {
+            try {
+                int n = 10;
+                int xx = n / 0;
+            } catch (Exception e) {
+                errMsg("T1(" + e.getMessage() + ")");
+                throw new CompletionException(e);
+            }
+        }, taskExecutor);
+        CompletableFuture<Void> T2 = CompletableFuture.runAsync(() -> {
+            try {
+                Thread.sleep(3000);
+                infoMsg("T2");
+            } catch (Exception e) {
+                throw new CompletionException(e);
+            }
+        }, taskExecutor);
+
+        return futureRst.get();
+    }
+
+    private void infoMsg(String msg) {
+        System.out.println(DateUtil.curDate() + " -> " + msg);
+    }
+
+    private void errMsg(String msg) {
+        System.err.println(DateUtil.curDate() + " -> " + msg);
     }
 }

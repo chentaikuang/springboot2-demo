@@ -3,12 +3,14 @@ package xiaochen.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import xiaochen.common.CommonResult;
 import xiaochen.param.Params;
 import xiaochen.service.TestService;
 import xiaochen.util.Loggers;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.concurrent.ExecutionException;
 
 @RequestMapping("/api/test")
 @RestController
@@ -72,5 +74,11 @@ public class TestController {
     @DeleteMapping("/del")
     public String del(@RequestBody Params param) {
         return testService.del(param);
+    }
+
+    //http://localhost:8877/api/test/complateTabFuture?p=XX
+    @GetMapping("/complateTabFuture")
+    public CommonResult complateTabFuture(@RequestParam(defaultValue = "P") String p) throws ExecutionException, InterruptedException {
+        return testService.complateTabFuture(p);
     }
 }
