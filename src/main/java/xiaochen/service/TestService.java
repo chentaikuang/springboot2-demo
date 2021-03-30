@@ -48,7 +48,7 @@ public class TestService {
     private static synchronized void forInfo() {
         for (int i = 0; i < 5; i++) {
             try {
-                System.out.println(DateFormatUtils.format(new Date(), "hh:MM:ss  ")
+                System.out.println(DateFormatUtils.format(new Date(), "HH:mm:ss  ")
                         + Thread.currentThread().getName() + ":" + i);
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
