@@ -60,6 +60,18 @@
             <version>${fastjson.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-core</artifactId>
+            <version>4.5.13</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-afs</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+
     </dependencies>
 
     <build>

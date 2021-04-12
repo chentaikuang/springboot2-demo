@@ -1,6 +1,8 @@
 package xiaochen.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.aliyuncs.afs.model.v20180112.AuthenticateSigRequest;
+import com.aliyuncs.afs.model.v20180112.AuthenticateSigResponse;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -8,6 +10,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import xiaochen.common.CommonResult;
 import xiaochen.param.Params;
+import xiaochen.test.IClientProfile;
 import xiaochen.util.DateUtil;
 
 import javax.annotation.Resource;
@@ -178,5 +181,29 @@ public class TestService {
         CompletableFuture.allOf(t1, t2).join();
         System.out.println(DateUtil.curDate());
         return new CommonResult(t1.get().getMsg() + " || " + t2.get().getMsg());
+    }
+
+    public CommonResult checkNoCaptcha(String sessionId, String sig, String token) {
+        String scene = "nc_login";
+        String appKey = "FFFF0N00000000009DEE";
+        String remoteIp = "127.0.0.1";
+        AuthenticateSigRequest request = new AuthenticateSigRequest();
+        request.setSessionId(sessionId);// 会话ID。必填参数，从前端获取，不可更改。
+        request.setSig(sig);// 签名串。必填参数，从前端获取，不可更改。
+        request.setToken(token);// 请求唯一标识。必填参数，从前端获取，不可更改。
+        request.setScene(scene);// 场景标识。必填参数，从前端获取，不可更改。
+        request.setAppKey(appKey);// 应用类型标识。必填参数，后端填写。
+        request.setRemoteIp(remoteIp);// 客户端IP。必填参数，后端填写。
+        String tips = null;
+        try {
+            //response的code枚举：100验签通过，900验签失败。
+            AuthenticateSigResponse response = IClientProfile.getClient().getAcsResponse(request);
+            tips = JSONObject.toJSONString(response);
+            System.out.println("--> " + tips);
+        } catch (Exception e) {
+            tips = e.getLocalizedMessage();
+            e.printStackTrace();
+        }
+        return new CommonResult(StringUtils.isBlank(tips) ? "ERR" : tips);
     }
 }

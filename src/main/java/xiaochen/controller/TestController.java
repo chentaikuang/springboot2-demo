@@ -87,4 +87,10 @@ public class TestController {
     public CommonResult futureJoin(@RequestParam(defaultValue = "P") String p) throws ExecutionException, InterruptedException {
         return testService.futureJoin(p);
     }
+
+    //http://localhost:8877/api/test/nc
+    @GetMapping("/nc")
+    public CommonResult nc(@RequestParam String sessionId, @RequestParam String sig, @RequestParam String token) {
+        return testService.checkNoCaptcha(sessionId, sig, token);
+    }
 }
