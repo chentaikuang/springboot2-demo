@@ -12,8 +12,11 @@ import xiaochen.common.CommonResult;
 import xiaochen.param.Params;
 import xiaochen.test.IClientProfile;
 import xiaochen.util.DateUtil;
+import xiaochen.util.IpUtil;
+import xiaochen.util.RequestHolder;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -186,7 +189,7 @@ public class TestService {
     public CommonResult checkNoCaptcha(String sessionId, String sig, String token) {
         String scene = "nc_login";
         String appKey = "FFFF0N00000000009DEE";
-        String remoteIp = "127.0.0.1";
+        String remoteIp = getIp();
         AuthenticateSigRequest request = new AuthenticateSigRequest();
         request.setSessionId(sessionId);// 会话ID。必填参数，从前端获取，不可更改。
         request.setSig(sig);// 签名串。必填参数，从前端获取，不可更改。
@@ -194,6 +197,7 @@ public class TestService {
         request.setScene(scene);// 场景标识。必填参数，从前端获取，不可更改。
         request.setAppKey(appKey);// 应用类型标识。必填参数，后端填写。
         request.setRemoteIp(remoteIp);// 客户端IP。必填参数，后端填写。
+        System.out.println("params -> " + JSONObject.toJSONString(request));
         String tips = null;
         try {
             //response的code枚举：100验签通过，900验签失败。
@@ -205,5 +209,10 @@ public class TestService {
             e.printStackTrace();
         }
         return new CommonResult(StringUtils.isBlank(tips) ? "ERR" : tips);
+    }
+
+    private String getIp() {
+        HttpServletRequest request = RequestHolder.getRequest();
+        return IpUtil.getIp(request);
     }
 }
