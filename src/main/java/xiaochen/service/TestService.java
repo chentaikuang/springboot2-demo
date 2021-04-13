@@ -54,8 +54,8 @@ public class TestService {
     private static synchronized void forInfo() {
         for (int i = 0; i < 5; i++) {
             try {
-                System.out.println(DateFormatUtils.format(new Date(), "HH:mm:ss  ")
-                        + Thread.currentThread().getName() + ":" + i);
+                String format = DateFormatUtils.format(new Date(), "HH:mm:ss  ");
+                System.out.println(format + Thread.currentThread().getName() + ":" + i);
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -203,6 +203,7 @@ public class TestService {
             //response的code枚举：100验签通过，900验签失败。
             AuthenticateSigResponse response = IClientProfile.getClient().getAcsResponse(request);
             tips = JSONObject.toJSONString(response);
+            //{"code":100,"detail":"{\"sigSource\":0}","msg":"pass_1","requestId":"8F8CD806-496A-4738-9D5F-FBB6EB2002B7","riskLevel":""}
             System.out.println("response --> " + tips);
         } catch (Exception e) {
             tips = e.getLocalizedMessage();

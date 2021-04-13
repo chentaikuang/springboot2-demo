@@ -14,7 +14,7 @@ public class TestConstrutorIoc implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        System.out.println(" -->> " + this.testService.getClass());
+        System.out.println("TestConstrutorIoc -->> " + this.testService.getClass());
         this.testService.test();
     }
 }

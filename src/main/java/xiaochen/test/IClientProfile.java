@@ -19,8 +19,7 @@ public class IClientProfile implements InitializingBean {
         // Create a new IClientProfile instance
         DefaultProfile profile = DefaultProfile.getProfile(regionid, accessKeyId, accessKeySecret);
         this.client = new DefaultAcsClient(profile);
-//        DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", "afs", "afs.aliyuncs.com");
-        DefaultProfile.getProfile(regionid,accessKeyId,accessKeySecret);
+        DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", "afs", "afs.aliyuncs.com");
         System.out.println("------> IAcsClient Init!");
     }
 
