@@ -10,7 +10,6 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import xiaochen.common.CommonResult;
 import xiaochen.param.Params;
-import xiaochen.test.IClientProfile;
 import xiaochen.util.DateUtil;
 import xiaochen.util.IpUtil;
 import xiaochen.util.RequestHolder;
@@ -187,8 +186,9 @@ public class TestService {
     }
 
     public CommonResult checkNoCaptcha(String sessionId, String sig, String token) {
-        String scene = "nc_login";
-        String appKey = "FFFF0N00000000009DEE";
+        String scene = "XXX";
+        String appKey = "YYY";
+
         String remoteIp = getIp();
         AuthenticateSigRequest request = new AuthenticateSigRequest();
         request.setSessionId(sessionId);// 会话ID。必填参数，从前端获取，不可更改。
@@ -199,11 +199,12 @@ public class TestService {
         request.setRemoteIp(remoteIp);// 客户端IP。必填参数，后端填写。
         System.out.println("params -> " + JSONObject.toJSONString(request));
         String tips = null;
+        AuthenticateSigResponse response = null;
         try {
             //response的code枚举：100验签通过，900验签失败。
-            AuthenticateSigResponse response = IClientProfile.getClient().getAcsResponse(request);
+            //response = IClientProfile.getClient().getAcsResponse(request);
             tips = JSONObject.toJSONString(response);
-            //{"code":100,"detail":"{\"sigSource\":0}","msg":"pass_1","requestId":"8F8CD806-496A-4738-9D5F-FBB6EB2002B7","riskLevel":""}
+            tips = "{\"code\":100,\"detail\":\"{\"sigSource\":0}\",\"msg\":\"pass_1\",\"requestId\":\"8F8CD806-496A-4738-9D5F-FBB6EB2002B7\",\"riskLevel\":\"\"}";
             System.out.println("response --> " + tips);
         } catch (Exception e) {
             tips = e.getLocalizedMessage();
