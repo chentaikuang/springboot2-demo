@@ -203,7 +203,7 @@ public class TestService {
             //response的code枚举：100验签通过，900验签失败。
             AuthenticateSigResponse response = IClientProfile.getClient().getAcsResponse(request);
             tips = JSONObject.toJSONString(response);
-            System.out.println("--> " + tips);
+            System.out.println("response --> " + tips);
         } catch (Exception e) {
             tips = e.getLocalizedMessage();
             e.printStackTrace();
