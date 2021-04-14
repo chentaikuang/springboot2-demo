@@ -19,6 +19,14 @@ public class CommonResult {
         this.data = RandomStringUtils.randomNumeric(6);
     }
 
+    public static CommonResult SUCCESS(String tips) {
+        return new CommonResult(200, "SUCCESS", tips);
+    }
+
+    public static CommonResult FAIL(String tips) {
+        return new CommonResult(400, tips, null);
+    }
+
     public int getCode() {
         return code;
     }

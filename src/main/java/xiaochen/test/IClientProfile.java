@@ -14,8 +14,8 @@ public class IClientProfile implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         String regionid = "cn-hangzhou";
-        String accessKeyId = "*** Provide your AccessKeyId ***";
-        String accessKeySecret = "*** Provide your AccessKeySecret ***";
+        String accessKeyId = "XXX";
+        String accessKeySecret = "YYY";
         // Create a new IClientProfile instance
         DefaultProfile profile = DefaultProfile.getProfile(regionid, accessKeyId, accessKeySecret);
         this.client = new DefaultAcsClient(profile);

@@ -210,7 +210,7 @@ public class TestService {
             tips = e.getLocalizedMessage();
             e.printStackTrace();
         }
-        return new CommonResult(StringUtils.isBlank(tips) ? "ERR" : tips);
+        return StringUtils.isBlank(tips) ? CommonResult.FAIL(tips) : CommonResult.SUCCESS(tips);
     }
 
     private String getIp() {
