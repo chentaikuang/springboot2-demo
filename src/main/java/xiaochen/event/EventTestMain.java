@@ -24,6 +24,8 @@ public class EventTestMain {
 //            System.out.println("---------------");
         }
         join();
+
+        //todo 发布事件后给已存在的监听者都发送，存在资源浪费：可否根据事件类型、标识，广播给目标监听者即可
     }
 
     private static void join(int... i) {
