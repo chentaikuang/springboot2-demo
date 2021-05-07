@@ -204,7 +204,7 @@ public class TestService {
             //response的code枚举：100验签通过，900验签失败。
             //response = IClientProfile.getClient().getAcsResponse(request);
             tips = JSONObject.toJSONString(response);
-            tips = "{\"code\":100,\"detail\":\"{\"sigSource\":0}\",\"msg\":\"pass_1\",\"requestId\":\"8F8CD806-496A-4738-9D5F-FBB6EB2002B7\",\"riskLevel\":\"\"}";
+//            tips = "{\"code\":100,\"detail\":\"{\"sigSource\":0}\",\"msg\":\"pass_1\",\"requestId\":\"8F8CD806-496A-4738-9D5F-FBB6EB2002B7\",\"riskLevel\":\"\"}";
             tips = "{\"code\":900,\"msg\":\"sig decrypt error\",\"requestId\":\"D024FAE7-5E89-4321-BC61-FF5FFB670E60\",\"riskLevel\":\"\"}";
             System.out.println("response --> " + tips);
         } catch (Exception e) {
